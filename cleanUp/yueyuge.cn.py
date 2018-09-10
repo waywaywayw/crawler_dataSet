@@ -7,7 +7,7 @@
 import os
 import pandas as pd
 
-from my_tools.my_files import MyFiles
+from NLP_myTools.files import MyFiles
 
 
 def merge(source, new):
@@ -39,12 +39,12 @@ def main():
         print('merge {} file.. cur_size:{}'.format(idx, len(source)))
 
     # 合并qingjing
-    # new_path = os.path.join(current_father_path, 'download_data', 'yueyuge.cn', 'qingjing')
-    # new_path_list = MyFiles(new_path)
-    # for idx, new_file in enumerate(new_path_list):
-    #     new = pd.read_excel(new_file)
-    #     source = merge(source, new)
-    #     print('merge {} file.. cur_size:{}'.format(idx, len(source)))
+    new_path = os.path.join(current_father_path, 'download_data', 'yueyuge.cn', 'qingjing')
+    new_path_list = MyFiles(new_path)
+    for idx, new_file in enumerate(new_path_list):
+        new = pd.read_excel(new_file)
+        source = merge(source, new)
+        print('merge {} file.. cur_size:{}'.format(idx, len(source)))
 
     output_path = os.path.join(current_father_path, 'output', 'ret.xlsx')
     source.to_excel(output_path, index=False)

@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import os, re
 
-from my_tools.my_files import MyFiles
+from NLP_myTools.files import MyFiles
 
 
 def get_page_resource(url):
