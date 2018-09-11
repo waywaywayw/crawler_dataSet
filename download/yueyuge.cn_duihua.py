@@ -44,7 +44,7 @@ def get_page_resource_list(start_url):
 def get_resource_from_page_resource(page_resource):
     """
     从资源页面爬取所需的资源。
-    :return 所需的资源列表。dict格式，形如：resource_list = [ {'need_name1':'v1', 'need_name2':'v2'}, {'need_name3':'v3'}]
+    :return 资源页面的所有资源。dict格式，形如：resource_list = [ {'need_name1':'v1', 'need_name2':'v2'}, {'need_name3':'v3'}]
     """
     resource_list = []
     response = requests.get(page_resource['url'], headers=headers)

@@ -59,8 +59,6 @@ class MyFiles(object):
         for file in self._fin_files:
             yield ''.join( file.split('.')[0:-1] )
 
-
-
     def fin_folder(self):
         return self._fin_folder
 

@@ -42,8 +42,9 @@ def main():
     print('需要下载的topic 数量:', len(need_topic))
 
     for idx, topic in enumerate(need_topic):
-        data_df = pd.DataFrame(columns=['粤语', '普通话'])
         resource, title = get_page_resource(need_topic_url.format(topic))
+
+        data_df = pd.DataFrame(columns=['粤语', '普通话'])
         for _idx, res in enumerate(resource):
             data_df.loc[_idx] = [res['粤语'], res['普通话']]
             # data_df.loc[idx] = res.values()

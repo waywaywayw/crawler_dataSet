@@ -7,7 +7,7 @@
 import os
 import pandas as pd
 
-from my_tools.my_files import MyFiles
+from NLP_myTools.files import MyFiles
 
 current_father_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -15,9 +15,9 @@ current_father_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))
 def merge_dataSet(source, new):
     """
     # 合并两个数据集
-    :param source:
-    :param new:
-    :return:
+    :param source: DataFrame格式
+    :param new: DataFrame格式
+    :return: 合并好的数据集。DataFrame格式
     """
     col = ['粤语', '普通话']
     # 合并
@@ -38,6 +38,7 @@ def merge_dataSet_floder(source, new_path):
 
 
 def main():
+    # 打开当前的数据集
     source_path = os.path.join(current_father_path, 'output', 'ret.xlsx')
     try:
         source = pd.read_excel(source_path)
@@ -46,6 +47,7 @@ def main():
         source = pd.read_excel(source_path)
     print('current source data size:{}'.format(len(source)))
 
+    # 合并数据集
     # yueyuge.cn
     new_path = os.path.join(current_father_path, 'download_data', 'yueyuge.cn', 'duihua')
     source = merge_dataSet_floder(source, new_path)
@@ -57,10 +59,10 @@ def main():
     new_path = os.path.join(current_father_path, 'download_data', 'fyan8.com', '2')
     source = merge_dataSet_floder(source, new_path)
 
+    # 保存数据集
     output_path = os.path.join(current_father_path, 'output', 'ret.xlsx')
     source.to_excel(output_path, index=False)
 
 
 if __name__ == '__main__':
-    # 考虑加入去重：粤语和普通话的字符串一模一样的数据，删掉
     main()
