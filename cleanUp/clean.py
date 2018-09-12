@@ -9,6 +9,7 @@ import pandas as pd
 
 current_father_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+
 def clean(source):
     """
     简单清洗数据集。
@@ -18,7 +19,7 @@ def clean(source):
 
     need_del_rows = []
     for idx, row in source.iterrows():
-        if row['粤语']==row['普通话']:
+        if row['粤语'] == row['普通话']:
             need_del_rows.append(idx)
 
     source.drop(need_del_rows, inplace=True)
@@ -36,6 +37,7 @@ def main():
     source.to_excel(output_path, index=False)
     print('清洗并保存完毕.')
     print('current source data size:{}'.format(len(source)))
+
 
 if __name__ == '__main__':
     main()
