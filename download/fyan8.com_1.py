@@ -17,7 +17,7 @@ def get_page_resource(url):
     soup = BeautifulSoup(response.content.decode('gb18030'), 'html.parser')
     try:
         title = soup.find('td', {'class': "biaoti1"}).get_text()
-    except :
+    except Exception as e:
         title = soup.find('td', {'class': "biaoti"}).get_text()
     contents_elem = soup.find('td', {'class': "zwjd"})
 
@@ -38,7 +38,7 @@ def main():
     output_path = os.path.join(current_path, '..', 'download_data', 'fyan8.com', '1')
     # 列表页
     need_topic = ['rwenhou', 'rhanxuan', 'rjieshao', 'rxunwen', 'rqingqiu', 'rganxie', 'rdaoqian', 'ryaoqing', 'rlvyou', ]
-    need_topic_url = 'http://www.fyan8.com.com/{}.htm'
+    need_topic_url = 'http://www.fyan8.com/{}.htm'
     print('需要下载的topic 数量:', len(need_topic))
 
     for idx, topic in enumerate(need_topic):

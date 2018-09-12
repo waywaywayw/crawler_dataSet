@@ -9,16 +9,16 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import os, re
 
-from my_tools.my_files import MyFiles
+from NLP_myTools.files import MyFiles
 
 
 def get_page_resource(url):
     response = requests.get(url)
     soup = BeautifulSoup(response.content.decode('gb18030'), 'html.parser')
     try:
-        title = soup.find('td', {'class': "biaoti1"}).get_text()
-    except :
         title = soup.find('td', {'class': "biaoti"}).get_text()
+    except :
+        title = soup.find('td', {'class': "biaoti1"}).get_text()
     contents_elem = soup.find('td', {'class': "zwjd"}).find('p').get_text()
 
     resouce_list = []
@@ -36,7 +36,7 @@ def main():
     output_path = os.path.join(current_path, '..', 'download_data', 'fyan8.com', '2')
     # 列表页
     need_topic = [""] + list(range(2, 14))
-    need_topic_url = 'http://www.fyan8.com.com/wenpin{}.htm'
+    need_topic_url = 'http://www.fyan8.com/wenpin{}.htm'
     print('需要下载的topic 数量:', len(need_topic))
 
     for idx, topic in enumerate(need_topic):

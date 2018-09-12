@@ -77,7 +77,7 @@ def main():
     page_resource_list = get_page_resource_list(start_url)
     # 判重（可选）
     exist_page_resource = list(MyFiles(output_path).file_name_no_suffix())
-    page_resource_list = list(filter(lambda x: x['title'] not in exist_page_resource and x['title'].startswith('情景对话用语')>=0, page_resource_list))
+    page_resource_list = list(filter(lambda x: (x['title'] not in exist_page_resource) and (x['title'].startswith('情景对话用语')), page_resource_list))
 
     print('需要下载的页面 数量：', len(page_resource_list))
     # 遍历所有page_resource_list
