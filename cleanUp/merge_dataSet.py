@@ -7,7 +7,7 @@
 import os
 import pandas as pd
 
-from NLP_myTools.files import MyFiles
+from python_myTools.files import MyFiles
 
 current_father_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -19,7 +19,7 @@ def merge_dataSet(source, new):
     :param new: DataFrame格式
     :return: 合并好的数据集。DataFrame格式
     """
-    col = ['粤语', '普通话']
+    col = ['粤语', '普通话', '繁体']
     # 合并
     ret = source.append(new, ignore_index=True)
     # 判断new中与source中重复的数据，删掉
@@ -47,21 +47,22 @@ def main():
         source = pd.read_excel(source_path)
     print('current source data size:{}'.format(len(source)))
 
+    need_datas_path = [
+        # yueyuge.cn
+        os.path.join(current_father_path, 'download_data', 'yueyuge.cn', 'duihua'),
+        os.path.join(current_father_path, 'download_data', 'yueyuge.cn', 'qingjing'),
+        # fyan8.com
+        os.path.join(current_father_path, 'download_data', 'fyan8.com', '1'),
+        os.path.join(current_father_path, 'download_data', 'fyan8.com', '2'),
+        # ted.com
+        os.path.join(current_father_path, 'download_data', 'ted.com')
+    ]
     # 合并数据集
-    # yueyuge.cn
-    new_path = os.path.join(current_father_path, 'download_data', 'yueyuge.cn', 'duihua')
-    source = merge_dataSet_floder(source, new_path)
-    new_path = os.path.join(current_father_path, 'download_data', 'yueyuge.cn', 'qingjing')
-    source = merge_dataSet_floder(source, new_path)
-    # fyan8.com
-    new_path = os.path.join(current_father_path, 'download_data', 'fyan8.com', '1')
-    source = merge_dataSet_floder(source, new_path)
-    new_path = os.path.join(current_father_path, 'download_data', 'fyan8.com', '2')
-    source = merge_dataSet_floder(source, new_path)
+    for new_path in need_datas_path:
+        source = merge_dataSet_floder(source, new_path)
 
     # 保存数据集
-    output_path = os.path.join(current_father_path, 'output', 'ret.xlsx')
-    source.to_excel(output_path, index=False)
+    source.to_excel(source_path, index=False)
 
 
 if __name__ == '__main__':
