@@ -29,9 +29,6 @@ class MyWebDriver(object):
         self._driver = None
         # 浏览器驱动的地址。之后默认放在'selenium_tools/Scripts'目录下
         self._executable_path = ""
-        # 设置代理
-        # self._service_args = ['--proxy=127.0.0.1:4860', '--proxy-type=socks5']
-        self._service_args = []
 
         if driver_type == 0:
             self._driver = self.webdriver_PhantomJS()
@@ -48,7 +45,7 @@ class MyWebDriver(object):
 
     def set_something(self):
         # 根据桌面分辨率来定，主要是为了抓到验证码的截屏
-        # browser.set_window_size(configure.windowHeight, configure.windowWidth)
+        # self._driver.set_window_size(configure.windowHeight, configure.windowWidth)
 
         # 设置10秒页面超时返回，类似于requests.get()的timeout选项，不过driver.get()没有timeout选项
         self._driver.implicitly_wait(30)
@@ -69,14 +66,17 @@ class MyWebDriver(object):
         prefs = {
             'profile.default_content_setting_values': {
                 'images': 2,  # 不加载图片
-                # 'javascript': 2,  # 不加载JS
+                'javascript': 2,  # 不加载JS
                 "User-Agent": get_random_UA()  # 随机UA
             }
         }
         chrome_options.add_experimental_option("prefs", prefs)
         # 无头模式
         # chrome_options.add_argument('--headless')
+        # 设置代理  未试用？！
+        # chrome_options.add_argument("--proxy-server=http://202.20.16.82:10152")
         # 其他的可以参考：https://blog.csdn.net/zwq912318834/article/details/78933910
+        # 还可参考：https://www.zhihu.com/question/35547395
 
         # 创建浏览器
         driver = webdriver.Chrome(chrome_options=chrome_options,
@@ -92,10 +92,14 @@ class MyWebDriver(object):
         dcap["phantomjs.page.settings.userAgent"] = get_random_UA()
         # 设置不载入图片
         dcap["phantomjs.page.settings.loadImages"] = False
+        # 设置代理
+        # service_args = ['--proxy=127.0.0.1:4860', '--proxy-type=socks5']  # socks5 ?? 还是http??
+        service_args = []
 
         # 创建浏览器
         driver = webdriver.PhantomJS(desired_capabilities=dcap,
-                                     executable_path=self._executable_path)
+                                     executable_path=self._executable_path,
+                                     service_args=service_args)
         return driver
 
     def webriver_Firefox(self):
@@ -114,6 +118,27 @@ class MyWebDriver(object):
                                    executable_path=self._executable_path)
         return driver
 
+    def slide_down(self):
+        """向下滑动窗口
+        """
+        driver = self._driver
+        # 将滚动条移动到页面的底部
+        js = "var q=document.documentElement.scrollTop=99100000"
+        driver.execute_script(js)
+        # time.sleep(3)
+        # 将滚动条移动到页面的顶部
+        # js = "var q=document.documentElement.scrollTop=0"
+        # driver.execute_script(js)
+        # time.sleep(3)
+        # 若要对页面中的内嵌窗口中的滚动条进行操作，要先定位到该内嵌窗口，在进行滚动条操作
+        # js = "var q=document.getElementById('id').scrollTop=100000"
+        # driver.execute_script(js)
+        # time.sleep(3)
+        # js = "var q=document.body.scrollTop=99100000"   # 实测Chrome用这个设置没用~
+        # driver.execute_script(js)
+        # time.sleep(3)
+
+    # 几个测试样例
     def connect_test_0(self):
         """
         官方快速入门的测试代码。如果没有任何输出，说明一切正常。
@@ -133,7 +158,8 @@ class MyWebDriver(object):
         自己写的几个测试样例
         """
         driver = self._driver
-        driver.get('http://1212.ip138.com/ic.asp')
+        # 查看本机ip，查看代理是否起作用
+        driver.get('http://httpbin.org/ip')
         print('1: ', driver.session_id)
         print('2: ', driver.page_source)
         print('3: ', driver.get_cookies())
